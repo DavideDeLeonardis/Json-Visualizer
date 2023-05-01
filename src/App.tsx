@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode, useState } from 'react';
+import { useState, ChangeEvent, ReactElement, ReactNode } from 'react';
 import './assets/scss/index.scss';
 
 interface File {
@@ -10,7 +10,7 @@ type TreeNode = {
    children?: TreeNode[];
 };
 
-function objectToTree(data: object | any[]): TreeNode[] {
+function objectToTree(data: object): TreeNode[] {
    const isArray = Array.isArray(data);
 
    return Object.entries(data).map(([key, value]) => {
@@ -24,10 +24,10 @@ function objectToTree(data: object | any[]): TreeNode[] {
    });
 }
 
-const App = (): ReactNode => {
+const App = (): ReactElement => {
    const [jsonData, setJsonData] = useState<File | null>(null);
 
-   const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
+   const setJsonParsed = (e: ChangeEvent<HTMLInputElement>): void => {
       const reader = new FileReader();
       reader.readAsText(e.target.files![0]);
       reader.onload = (e) =>
@@ -40,15 +40,15 @@ const App = (): ReactNode => {
       const renderTreeNodes = (nodes: TreeNode[]) => {
          return nodes.map((node) => {
             return (
-                  <li key={node.name}>
-                     {node.name}
-                     {node.children && (
-                        <ul style={{ marginLeft: '20px' }}>
-                           {renderTreeNodes(node.children)}
-                        </ul>
-                     )}
-                     <br />
-                  </li>
+               <li key={node.name}>
+                  {node.name}
+                  {node.children && (
+                     <ul style={{ marginLeft: '20px' }}>
+                        {renderTreeNodes(node.children)}
+                     </ul>
+                  )}
+                  <br />
+               </li>
             );
          });
       };
@@ -58,8 +58,8 @@ const App = (): ReactNode => {
 
    return (
       <div className="container">
-			<input type="file" onChange={handleFileChange} />
-			<br />
+         <input type="file" onChange={setJsonParsed} />
+         <br />
          {jsonData && <div>{displayProperty(jsonData)}</div>}
       </div>
    );
