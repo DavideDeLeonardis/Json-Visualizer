@@ -15,7 +15,14 @@ body {
 }
 
 .container {
-   width: 95%;
-   margin: auto;
-   margin-top: 20px;
+   display: flex;
+   flex-direction: column;
+	padding: 50px;
+
+	textarea {
+		resize: none;
+		width: 80%;
+		height: 100px;
+		margin-top: 20px;
+	}
 }

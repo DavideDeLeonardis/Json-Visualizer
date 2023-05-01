@@ -29,7 +29,8 @@
          {
             "id": 2,
             "caption": "testo 2",
-            "text": null
+            "text": null,
+				"es": [1, 2, 3]
          },
          {
             "id": 3,

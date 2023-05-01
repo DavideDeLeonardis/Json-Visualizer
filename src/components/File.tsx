@@ -1,24 +1,39 @@
-import { useState, ChangeEvent } from 'react';
+// import { useState, ChangeEvent } from 'react';
 
-import classes from './file.module.scss';
+// import classes from './file.module.scss';
 
-const File = () => {
-   const [file, setFile] = useState(null);
-	const [JsonToHandle, setJsonToHandle] = useState();
+// const File = ({ data }) => {
+//    const [file, setFile] = useState();
+//    const [textareaJsonFile, setTextareaJsonFile] = useState();
+//    const [inputJsonFile, setInputJsonFile] = useState();
+
 	
+//    // return (
+//    //    <div className={classes.container}>
+//    //       <input
+//    //          type="file"
+//    //          // value={}
+//    //          // onChange={}
+//    //       />
+//    //       <br />
+//    //       <textarea
+//    //          style={{ height: '200px', width: '100%', resize: 'none' }}
+//    //          // value={}
+//    //          // onChange={}
+//    //       ></textarea>
+//    //       <ul></ul>
+//    //    </div>
+//    // );
 
-   return (
-      <div className={classes.container}>
-         <input type="file" onChange={() => null} />
-         <br />
-         <textarea
-            style={{ height: '200px', width: '100%', resize: 'none' }}
-            value={JsonToHandle}
-            onChange={() => null}
-         ></textarea>
-         <ul></ul>
-      </div>
-   );
-};
+   
+// };
 
-export default File;
+// function JSONValue({ value }) {
+//    if (typeof value === 'object' && value !== null) {
+//       return <File data={value} />;
+//    } else {
+//       return String(value);
+//    }
+// }
+
+// export default File;
