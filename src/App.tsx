@@ -1,4 +1,7 @@
+//Libraries
 import { FC, ChangeEvent, ReactNode, useState } from 'react';
+
+// SCSS
 import './assets/scss/index.scss';
 
 type FieldValue = string | number | boolean | FieldArray | FieldObject | null;
@@ -6,16 +9,36 @@ type FieldArray = FieldValue[];
 interface FieldObject {
    [fieldName: string]: FieldValue | null;
 }
-const displayFields = (field: FieldArray | FieldObject): ReactNode => {
+
+// Render all json entries
+/**
+ * @param JsonEntries: FieldArray | FieldObject
+ * @returns ReactNode
+ */
+const renderFields = (field: FieldArray | FieldObject): ReactNode => {
    return Object.entries(field).map(([fieldName, fieldValue], key) => (
       <li key={key}>
-         <strong>{fieldName}</strong>: {typeof fieldValue} {'->'}{' '}
-         {displayFieldValue(fieldValue)}
+         <strong>{fieldName}</strong>
+         {fieldValue === null || undefined
+            ? null
+            : Array.isArray(fieldValue)
+            ? ': []'
+            : typeof fieldValue === 'object'
+            ? ': {}'
+            : `: ${typeof fieldValue}`}
+         {' -> '}
+         {renderFieldValue(fieldValue)}
       </li>
    ));
 };
 
-const displayFieldValue = (fieldValue: FieldValue): ReactNode => {
+// Render json properties VALUES
+/**
+ * @param JsonPropertyValue: FieldValue
+ * @returns ReactNode
+ */
+const renderFieldValue = (fieldValue: FieldValue): ReactNode => {
+   // Render if array
    if (Array.isArray(fieldValue))
       if (
          fieldValue.every(
@@ -25,10 +48,12 @@ const displayFieldValue = (fieldValue: FieldValue): ReactNode => {
          return fieldValue.join(', ');
       else
          return fieldValue.map((item, index) => (
-            <ul key={index}>{displaySingleField(item)}</ul>
+            <ul key={index}>{renderSingleField(item)}</ul>
          ));
+   // Render if object
    else if (fieldValue && typeof fieldValue === 'object')
-      return displayFields(fieldValue);
+      return renderFields(fieldValue);
+   // Else
    else
       return (
          <>
@@ -39,16 +64,25 @@ const displayFieldValue = (fieldValue: FieldValue): ReactNode => {
       );
 };
 
-const displaySingleField = (field: FieldValue): ReactNode => {
+// Render json single fields and nullish values
+/**
+ * @param JsonProperty: FieldValue
+ * @returns ReactNode
+ */
+const renderSingleField = (field: FieldValue): ReactNode => {
+   // Render if array
    if (Array.isArray(field) && field.every((item) => typeof item === 'number'))
       return field.join(', ');
-   else if (field && typeof field === 'object') return displayFields(field);
+   // Render if object
+   else if (field && typeof field === 'object') return renderFields(field);
+   // Else
    else return <>{field === null || field === undefined ? 'null' : field}</>;
 };
 
 const App: FC = () => {
-   const [json, setJson] = useState<FieldObject[]>([]);
+   const [jsonData, setJsonData] = useState<FieldObject[]>([]);
 
+   // Handler for file input upload
    const handleFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
       const file = e.target.files?.[0];
       if (!file) return;
@@ -57,7 +91,9 @@ const App: FC = () => {
       reader.onload = () => {
          try {
             const json = JSON.parse(reader.result as string);
-            if (Array.isArray(json)) setJson(json);
+
+            if (!Array.isArray(json)) setJsonData([json]);
+            else setJsonData(json);
          } catch (error) {
             alert('Errore nella lettura del file JSON.');
          }
@@ -69,8 +105,8 @@ const App: FC = () => {
       <main>
          <input type="file" accept=".json" onChange={handleFileUpload} />
          <div className="container">
-            {json.map((item, key) => (
-               <ul key={key}>{displayFields(item)}</ul>
+            {jsonData.map((item, key) => (
+               <ul key={key}>{renderFields(item)}</ul>
             ))}
          </div>
       </main>
