@@ -1,67 +1,63 @@
-import { useState, ChangeEvent, ReactElement, ReactNode } from 'react';
+import { ChangeEvent, ReactElement, ReactNode, useState } from 'react';
+
 import './assets/scss/index.scss';
 
-interface File {
-   [key: string]: File | string;
-}
-
-type TreeNode = {
-   name: string;
-   children?: TreeNode[];
-};
-
-function objectToTree(data: object): TreeNode[] {
-   const isArray = Array.isArray(data);
-
-   return Object.entries(data).map(([key, value]) => {
-      const node: TreeNode = { name: isArray ? `[${key}]` : key };
-
-      if (value && (Array.isArray(value) || typeof value === 'object')) {
-         node.children = objectToTree(value);
-      }
-
-      return node;
-   });
-}
+type Field = string | [] | object;
 
 const App = (): ReactElement => {
-   const [jsonData, setJsonData] = useState<File | null>(null);
+   const [json, setJson] = useState<[]>([]);
 
-   const setJsonParsed = (e: ChangeEvent<HTMLInputElement>): void => {
-      const reader = new FileReader();
-      reader.readAsText(e.target.files![0]);
-      reader.onload = (e) =>
-         setJsonData(JSON.parse(e.target!.result as string));
+   const displayFieldValue = (fieldValue: Field): string | ReactNode => {
+      if (Array.isArray(fieldValue))
+         return fieldValue.map((item, index) => (
+            <div key={index}>
+               {displaySingleField(item)}
+               <br />
+            </div>
+         ));
+      else if (fieldValue && typeof fieldValue === 'object')
+         return displayFields(fieldValue);
+      else
+         return fieldValue === null || fieldValue === undefined
+            ? 'null'
+            : fieldValue;
    };
 
-   const displayProperty = (file: File): ReactNode => {
-      const nodes = objectToTree(file);
+   const displaySingleField = (field: Field): ReactNode => {
+      return Object.entries(field).map(([fieldName, fieldValue], key) => (
+         <div key={key} style={{ marginLeft: '20px' }}>
+            <strong>{fieldName}: </strong>
+            {displayFieldValue(fieldValue as object)}
+         </div>
+      ));
+   };
 
-      const renderTreeNodes = (nodes: TreeNode[]) => {
-         return nodes.map((node) => {
-            return (
-               <li key={node.name}>
-                  {node.name}
-                  {node.children && (
-                     <ul style={{ marginLeft: '20px' }}>
-                        {renderTreeNodes(node.children)}
-                     </ul>
-                  )}
-                  <br />
-               </li>
-            );
-         });
+   const displayFields = (fields: Field): ReactNode => {
+      return Object.entries(fields).map(([fieldName, fieldValue], key) => (
+         <li key={key}>
+            <strong>{fieldName}: </strong> {displayFieldValue(fieldValue)}
+         </li>
+      ));
+   };
+
+   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
+      const reader: FileReader = new FileReader();
+      reader.onload = () => {
+         const json = JSON.parse(reader.result as string);
+         setJson(json);
       };
-
-      return <ul>{renderTreeNodes(nodes)}</ul>;
+      reader.readAsText(e.target.files![0]);
    };
 
    return (
-      <div className="container">
-         <input type="file" onChange={setJsonParsed} />
-         <br />
-         {jsonData && <div>{displayProperty(jsonData)}</div>}
-      </div>
+      <>
+         <input type="file" accept=".json" onChange={handleFileUpload} />
+         {json.map((item, key) => (
+            <div className="container-field" key={key}>
+               <ul>{displayFields(item)}</ul>
+            </div>
+         ))}
+      </>
    );
 };
 

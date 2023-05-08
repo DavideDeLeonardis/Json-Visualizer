@@ -8,21 +8,20 @@ body {
    width: 100%;
    height: 100vh;
    font-size: 100%;
-   font-family: Verdana, Geneva, Tahoma, sans-serif;
    color: #ffffff;
-   background-color: rgb(42, 39, 39);
+   background-color: rgb(69, 65, 65);
    overflow: hidden;
 }
 
-.container {
+.container-field {
    display: flex;
    flex-direction: column;
-	padding: 50px;
+   margin: 10px 20px;
 
-	textarea {
-		resize: none;
-		width: 80%;
-		height: 100px;
-		margin-top: 20px;
-	}
+   ul {
+      list-style-type: none;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid gray;
+   }
 }
