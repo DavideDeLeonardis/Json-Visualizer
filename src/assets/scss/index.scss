@@ -10,18 +10,15 @@ body {
    font-size: 100%;
    color: #ffffff;
    background-color: rgb(69, 65, 65);
-   overflow: hidden;
 }
 
-.container-field {
-   display: flex;
-   flex-direction: column;
+.container {
    margin: 10px 20px;
 
    ul {
       list-style-type: none;
       padding: 10px;
       margin-bottom: 20px;
-      border: 1px solid gray;
+		border-left: 1px solid gray;
    }
 }

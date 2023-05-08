@@ -1,38 +1,61 @@
 import { ChangeEvent, ReactElement, ReactNode, useState } from 'react';
-
 import './assets/scss/index.scss';
 
-type Field = string | [] | object;
+interface FieldObject {
+   [fieldName: string]: Field | null;
+}
+
+type Field = string | number | boolean | FieldArray | FieldObject | null;
+
+type FieldArray = Array<Field>;
 
 const App = (): ReactElement => {
    const [json, setJson] = useState<[]>([]);
 
    const displayFieldValue = (fieldValue: Field): string | ReactNode => {
       if (Array.isArray(fieldValue))
-         return fieldValue.map((item, index) => (
-            <div key={index}>
-               {displaySingleField(item)}
-               <br />
-            </div>
-         ));
+         if (
+            fieldValue.every(
+               (item) => typeof item === 'number' || typeof item === 'string'
+            )
+         )
+            return fieldValue.join(', ');
+         else
+            return fieldValue.map((item, index) => (
+               <div key={index}>
+                  {displaySingleField(item)}
+                  <br />
+               </div>
+            ));
       else if (fieldValue && typeof fieldValue === 'object')
          return displayFields(fieldValue);
       else
          return fieldValue === null || fieldValue === undefined
             ? 'null'
-            : fieldValue;
+            : String(fieldValue);
    };
 
    const displaySingleField = (field: Field): ReactNode => {
-      return Object.entries(field).map(([fieldName, fieldValue], key) => (
-         <div key={key} style={{ marginLeft: '20px' }}>
-            <strong>{fieldName}: </strong>
-            {displayFieldValue(fieldValue as object)}
-         </div>
-      ));
+      if (
+         Array.isArray(field) &&
+         field.every((item) => typeof item === 'number')
+      )
+         return field.join(', ');
+
+      if (field && typeof field === 'object')
+         return Object.entries(field as object).map(
+            ([fieldName, fieldValue], key) => (
+               <div key={key} style={{ marginLeft: '20px' }}>
+                  <strong>{fieldName}: </strong>
+                  {displayFieldValue(fieldValue as Field)}
+               </div>
+            )
+         );
+
+      return <>{field === null || field === undefined ? 'null' : field}</>;
    };
 
-   const displayFields = (fields: Field): ReactNode => {
+   const displayFields = (fields: FieldObject): ReactNode => {
       return Object.entries(fields).map(([fieldName, fieldValue], key) => (
          <li key={key}>
             <strong>{fieldName}: </strong> {displayFieldValue(fieldValue)}
@@ -41,7 +64,7 @@ const App = (): ReactElement => {
    };
 
    const handleFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
-      const reader: FileReader = new FileReader();
+      const reader = new FileReader();
       reader.onload = () => {
          const json = JSON.parse(reader.result as string);
          setJson(json);
@@ -50,14 +73,14 @@ const App = (): ReactElement => {
    };
 
    return (
-      <>
+      <main>
          <input type="file" accept=".json" onChange={handleFileUpload} />
-         {json.map((item, key) => (
-            <div className="container-field" key={key}>
-               <ul>{displayFields(item)}</ul>
-            </div>
-         ))}
-      </>
+         <div className="container">
+            {json.map((item, key) => (
+               <ul key={key}>{displayFields(item)}</ul>
+            ))}
+         </div>
+      </main>
    );
 };
 

@@ -8,14 +8,16 @@
             "id": 1,
             "caption": "testo 1",
             "text": null,
-            "numbers": [1, 2, 3]
+            "numbers": ["ciao", 1, 2, 3]
          }
-      ]
+      ],
+      "active": false
    },
    {
       "id": 2,
       "title": "testo 2",
-      "captions": null
+      "captions": null,
+		"active": true
    },
    {
       "id": 3,
@@ -37,6 +39,7 @@
             "id": 3,
             "caption": "testo 3"
          }
-      ]
+      ],
+      "active": true
    }
 ]
