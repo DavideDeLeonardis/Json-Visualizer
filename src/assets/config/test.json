@@ -16,8 +16,9 @@
    {
       "id": 2,
       "title": "testo 2",
+      "name": null,
       "captions": null,
-		"active": true
+      "active": true
    },
    {
       "id": 3,
@@ -33,7 +34,15 @@
             "id": 2,
             "caption": "testo 2",
             "text": null,
-            "numbers": [{ "num": 1 }, { "num": 2 }, { "num": 3 }]
+            "numbers": [
+               { "num": 1, "text": "text example" },
+               {
+                  "num": 2,
+                  "children": [{ "child": 1 }, { "child": 4 }, { "child": 5 }],
+                  "active": null
+               },
+               { "num": 3 }
+            ]
          },
          {
             "id": 3,
