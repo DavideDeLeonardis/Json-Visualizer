@@ -13,50 +13,92 @@ body {
    font-size: 100%;
    color: #ffffff;
    background-color: rgb(69, 65, 65);
-   scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
    display: none;
-}
-
-ul {
-   list-style-type: none;
+   scrollbar-width: none;
 }
 
 .container {
    margin: 20px;
 
    .header {
+      width: 100%;
       display: flex;
       align-items: center;
+      margin-top: 50px;
 
       input {
          width: 300px;
+         font-size: 18px;
+         margin-right: 20px;
+         outline: none;
       }
 
       span {
          margin-right: 40px;
       }
 
-      textarea {
-         resize: none;
-         height: 150px;
-         width: 60%;
-         margin-right: 15px;
+      .textarea-container {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+
+         textarea {
+            height: 150px;
+            width: 100%;
+            margin-right: 15px;
+            padding: 5px;
+            resize: none;
+            outline: none;
+         }
+
+         button {
+            padding: 5px 20px;
+            border: none;
+            transition: 200ms;
+            cursor: pointer;
+
+            &:hover {
+               background-color: lightgray;
+            }
+         }
       }
 
-      button {
-         padding: 5px 20px;
+      .tips {
+         padding-top: 10px;
+         color: #e0cb2b;
       }
    }
 
    main {
+      border: 1px solid rgb(78, 78, 78);
+      margin-top: 50px;
+      padding: 15px;
+
       ul {
          position: relative;
          margin: 15px 0 5px 25px;
-         padding: 5px 0 4px 7.5px;
+         padding: 7.5px 0 5px 10px;
          border-left: 2.5px solid var(--field-wrap);
+         list-style-type: none;
+
+         .key {
+            font-size: 18px;
+            text-transform: capitalize;
+            font-weight: bold;
+         }
+
+         .type {
+            font-size: 16px;
+            color: rgb(24, 165, 24);
+         }
+
+         .value {
+            display: inline;
+            font-size: 18px;
+         }
 
          li:before,
          li:after {

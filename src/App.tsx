@@ -18,16 +18,18 @@ interface FieldObject {
 const renderFields = (field: FieldArray | FieldObject): ReactNode => {
    return Object.entries(field).map(([fieldName, fieldValue], key) => (
       <li key={key}>
-         <strong>{fieldName}</strong>
-         {fieldValue === null || undefined
-            ? null
-            : Array.isArray(fieldValue)
-            ? ': []'
-            : typeof fieldValue === 'object'
-            ? ': {}'
-            : `: ${typeof fieldValue}`}
-         {' -> '}
-         {renderFieldValue(fieldValue)}
+         <span className="key">{fieldName}</span>:{' '}
+         <span className="type">
+            {fieldValue === null || undefined
+               ? 'null'
+               : Array.isArray(fieldValue)
+               ? '[ ]'
+               : typeof fieldValue === 'object'
+               ? '{ }'
+               : typeof fieldValue}
+         </span>
+         {' --> '}
+         <div className="value">{renderFieldValue(fieldValue)}</div>
       </li>
    ));
 };
@@ -112,6 +114,8 @@ const App: FC = () => {
 
    return (
       <div className="container">
+         <h1>Insert a JSON file in the input box, or write your own JSON</h1>
+
          <div className="header">
             <input
                type="file"
@@ -119,19 +123,30 @@ const App: FC = () => {
                accept=".json"
                onChange={handleFileUpload}
             />
-            <span>oppure</span>
-            <textarea
-               placeholder="Write in JSON"
-               value={textareaValue}
-               onChange={onTextareaValueChange}
-            ></textarea>
-            <button onClick={visualizeTextareaValue}>Visualize</button>
+            <span>or</span>
+
+            <div>
+               <div className="textarea-container">
+                  <textarea
+                     placeholder="Write in JSON"
+                     value={textareaValue}
+                     onChange={onTextareaValueChange}
+                  ></textarea>
+                  <button onClick={visualizeTextareaValue}>Visualize</button>
+               </div>
+               <div className="tips">
+                  - Remember to use <u>double quotes</u> in JSON and{' '}
+                  <u>remove commas</u> from last properties.
+               </div>
+            </div>
          </div>
 
          <main>
-            {jsonData.map((item, key) => (
-               <ul key={key}>{renderFields(item)}</ul>
-            ))}
+            {jsonData.length == 0
+               ? 'Visualize here'
+               : jsonData.map((item, key) => (
+                    <ul key={key}>{renderFields(item)}</ul>
+                 ))}
          </main>
       </div>
    );
