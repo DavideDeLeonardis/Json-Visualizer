@@ -1,95 +1,22 @@
 //Libraries
-import { FC, ChangeEvent, ReactNode, useState, useRef } from 'react';
+import { FC, ChangeEvent, useState, useRef } from 'react';
 
-// Utils
-import { isString, isNumber, isObject } from './utils/isType';
+// Components
+import Fields from './components/Fields';
+
+// Types
+import { FieldObject } from './types';
 
 // SCSS
 import './assets/scss/index.scss';
-
-type FieldValue = string | number | boolean | FieldArray | FieldObject | null;
-type FieldArray = FieldValue[];
-interface FieldObject {
-   [fieldName: string]: FieldValue | null;
-}
-
-// Render all json entries
-/**
- * @param JsonEntries: FieldArray | FieldObject
- * @returns ReactNode
- */
-const Fields = (field: FieldArray | FieldObject): ReactNode => {
-   return Object.entries(field).map(([fieldName, fieldValue], key) => (
-      <li key={key}>
-         <span className="key">{fieldName}</span>:
-         <span className="type">
-            {fieldValue === null || undefined
-               ? 'null'
-               : Array.isArray(fieldValue)
-               ? '[ ]'
-               : isObject(fieldValue)
-               ? '{ }'
-               : typeof fieldValue}
-         </span>
-         {' --> '}
-         {(fieldValue !== null || undefined) &&
-         (Array.isArray(fieldValue) || isObject(fieldValue)) ? (
-            <details className="value">
-               <summary></summary>
-               {renderFieldValue(fieldValue)}
-            </details>
-         ) : (
-            renderFieldValue(fieldValue)
-         )}
-      </li>
-   ));
-};
-
-// Render json properties VALUES
-/**
- * @param JsonPropertyValue: FieldValue
- * @returns ReactNode
- */
-const renderFieldValue = (fieldValue: FieldValue): ReactNode => {
-   if (Array.isArray(fieldValue))
-      if (fieldValue.every((item) => isNumber(item) || isString(item)))
-         return fieldValue.join(', ');
-      else
-         return fieldValue.map((item, index) => (
-            <ul key={index}>{renderSingleField(item)}</ul>
-         ));
-   else if (fieldValue && isObject(fieldValue))
-      return <ul>{Fields(fieldValue as FieldArray | FieldObject)}</ul>;
-   else
-      return (
-         <>
-            {fieldValue === null || fieldValue === undefined
-               ? 'null'
-               : String(fieldValue)}
-         </>
-      );
-};
-
-// Render json single fields and nullish values
-/**
- * @param JsonProperty: FieldValue
- * @returns ReactNode
- */
-const renderSingleField = (field: FieldValue): ReactNode => {
-   if (Array.isArray(field) && field.every((item) => isNumber(item)))
-      return field.join(', ');
-   else if (field && isObject(field))
-      return Fields(field as FieldArray | FieldObject);
-   else return <>{field === null || field === undefined ? 'null' : field}</>;
-};
 
 const App: FC = () => {
    const [jsonData, setJsonData] = useState<FieldObject[]>([]);
    const [textareaValue, setTextareaValue] = useState<string>('');
    const inputRef = useRef<HTMLInputElement>(null);
 
-   // Handle and convert file input uploaded
-   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
+   // Handler file input uploaded
+   const onInputFileUpload = (e: ChangeEvent<HTMLInputElement>): void => {
       const file: File | undefined = e.target.files?.[0];
       if (!file) return;
 
@@ -108,7 +35,7 @@ const App: FC = () => {
       if (inputRef.current) inputRef.current.value = '';
    };
 
-   // Manage json received and set json state
+   // Parse json received and set json state
    const setJsonDataHandler = (value: string | ArrayBuffer | null): void => {
       try {
          const json = JSON.parse(value as string);
@@ -129,7 +56,7 @@ const App: FC = () => {
                type="file"
                ref={inputRef}
                accept=".json"
-               onChange={handleFileUpload}
+               onChange={onInputFileUpload}
             />
             <span>or</span>
 
@@ -143,8 +70,8 @@ const App: FC = () => {
                   <button onClick={visualizeTextareaValue}>Visualize</button>
                </div>
                <div className="tips">
-                  - Remember to use <u>double quotes</u> in JSON and{' '}
-                  <u>remove commas</u> from last properties.
+                  - Remember to use <u>double quotes</u> and{' '}
+                  <u>remove commas</u> from last properties in JSON.
                </div>
             </div>
          </div>

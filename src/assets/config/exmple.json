@@ -43,7 +43,10 @@
             "caption": "testo 2",
             "text": null,
             "numbers": [
-               { "num": 1, "text": "text example" },
+               {
+                  "num": 1,
+                  "text": "Testo campione privo di significato usato da grafici, programmatori, redattori e tipografi per occupare lo spazio. Testo campione privo di significato usato da grafici, programmatori, redattori e tipografi per occupare lo spazio"
+               },
                {
                   "num": 2,
                   "children": [{ "child": 1 }, { "child": 4 }, { "child": 5 }],

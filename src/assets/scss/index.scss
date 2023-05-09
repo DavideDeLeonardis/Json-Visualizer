@@ -15,11 +15,6 @@ body {
    background-color: rgb(69, 65, 65);
 }
 
-::-webkit-scrollbar {
-   display: none;
-   scrollbar-width: none;
-}
-
 .container {
    margin: 20px;
 
@@ -31,7 +26,7 @@ body {
 
       input {
          width: 300px;
-         font-size: 18px;
+         font-size: 16px;
          margin-right: 20px;
          outline: none;
       }
@@ -59,9 +54,16 @@ body {
             border: none;
             transition: 200ms;
             cursor: pointer;
-
-            &:hover {
+            translate &:hover {
                background-color: lightgray;
+            }
+         }
+
+         @media screen and (max-width: 650px) {
+            flex-wrap: wrap;
+
+            button {
+               margin-top: 20px;
             }
          }
       }
@@ -73,14 +75,15 @@ body {
    }
 
    main {
-      border: 1px solid rgb(78, 78, 78);
-      margin-top: 50px;
+      margin: 50px 20px 20px 20px;
       padding: 15px;
+      border: 1px solid rgb(78, 78, 78);
+      overflow-x: scroll;
 
       ul {
          position: relative;
-         margin: 15px 0 5px 25px;
-         padding: 7.5px 0 5px 10px;
+         margin: 15px 0 30px 25px;
+         padding: 10px 0 7.5px 10px;
          border-left: 2.5px solid var(--field-wrap);
          list-style-type: none;
 
@@ -92,12 +95,13 @@ body {
 
          .type {
             font-size: 16px;
-            color: rgb(24, 165, 24);
+            color: #16825d;
          }
 
          .value {
             display: inline;
             font-size: 18px;
+            padding-right: 15px;
 
             summary {
                font-size: 14px;
@@ -112,27 +116,28 @@ body {
             display: flex;
             justify-content: start;
             align-items: center;
+            white-space: nowrap;
             gap: 5px;
+            padding-right: 15px;
 
-				&:before,
-				&:after {
-					content: '';
-					position: absolute;
-					left: 0;
-					width: 15px;
-					height: 2.5px;
-					background-color: var(--field-wrap);
-				}
-	
-				&:after {
-					top: 0;
-				}
-	
-				&:before {
-					bottom: 0;
-				}
+            &:before,
+            &:after {
+               content: '';
+               position: absolute;
+               left: 0;
+               width: 15px;
+               height: 2.5px;
+               background-color: var(--field-wrap);
+            }
+
+            &:after {
+               top: 0;
+            }
+
+            &:before {
+               bottom: 0;
+            }
          }
-
       }
    }
 }
