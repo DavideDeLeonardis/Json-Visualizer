@@ -7,35 +7,6 @@
          {
             "id": 1,
             "caption": "testo 1",
-            "text": null,
-            "numbers": ["ciao", 1, 2, 3],
-            "example": {
-               "num": 1,
-               "active": true
-            }
-         }
-      ],
-      "active": false
-   },
-   {
-      "id": 2,
-      "title": "Testo campione privo di significato usato da grafici, programmatori, redattori e tipografi per occupare lo spazio vuoto di una pagina prima che venga inserito un testo di senso compiuto.",
-      "name": null,
-      "captions": null,
-      "example": {
-         "num": 1,
-         "active": true
-      },
-      "active": true
-   },
-   {
-      "id": 3,
-      "title": "testo 3",
-      "name": "name 3",
-      "captions": [
-         {
-            "id": 1,
-            "caption": "testo 1",
             "text": "text"
          },
          {
@@ -63,6 +34,35 @@
          {
             "id": 3,
             "caption": "testo 3"
+         }
+      ],
+      "active": false
+   },
+   {
+      "id": 2,
+      "title": "Testo campione privo di significato usato da grafici, programmatori, redattori e tipografi per occupare lo spazio vuoto di una pagina prima che venga inserito un testo di senso compiuto.",
+      "name": null,
+      "captions": null,
+      "example": {
+         "num": 1,
+         "active": true
+      },
+      "active": true
+   },
+   {
+      "id": 3,
+      "title": "testo 3",
+      "name": "name 3",
+      "captions": [
+         {
+            "id": 1,
+            "caption": "testo 1",
+            "text": null,
+            "numbers": ["ciao", 1, 2, 3],
+            "example": {
+               "num": 1,
+               "active": true
+            }
          }
       ],
       "active": true
