@@ -54,7 +54,8 @@
                   "children": ["string 1", "string 2"],
                   "active": false
                }
-            ]
+            ],
+            "active": false
          },
          {
             "id": 3,
