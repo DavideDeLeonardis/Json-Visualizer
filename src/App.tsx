@@ -1,6 +1,9 @@
 //Libraries
 import { FC, ChangeEvent, ReactNode, useState, useRef } from 'react';
 
+// Utils
+import { isString, isNumber, isObject } from './utils/isType';
+
 // SCSS
 import './assets/scss/index.scss';
 
@@ -15,21 +18,29 @@ interface FieldObject {
  * @param JsonEntries: FieldArray | FieldObject
  * @returns ReactNode
  */
-const renderFields = (field: FieldArray | FieldObject): ReactNode => {
+const Fields = (field: FieldArray | FieldObject): ReactNode => {
    return Object.entries(field).map(([fieldName, fieldValue], key) => (
       <li key={key}>
-         <span className="key">{fieldName}</span>:{' '}
+         <span className="key">{fieldName}</span>:
          <span className="type">
             {fieldValue === null || undefined
                ? 'null'
                : Array.isArray(fieldValue)
                ? '[ ]'
-               : typeof fieldValue === 'object'
+               : isObject(fieldValue)
                ? '{ }'
                : typeof fieldValue}
          </span>
          {' --> '}
-         <div className="value">{renderFieldValue(fieldValue)}</div>
+         {(fieldValue !== null || undefined) &&
+         (Array.isArray(fieldValue) || isObject(fieldValue)) ? (
+            <details className="value">
+               <summary></summary>
+               {renderFieldValue(fieldValue)}
+            </details>
+         ) : (
+            renderFieldValue(fieldValue)
+         )}
       </li>
    ));
 };
@@ -41,18 +52,14 @@ const renderFields = (field: FieldArray | FieldObject): ReactNode => {
  */
 const renderFieldValue = (fieldValue: FieldValue): ReactNode => {
    if (Array.isArray(fieldValue))
-      if (
-         fieldValue.every(
-            (item) => typeof item === 'number' || typeof item === 'string'
-         )
-      )
+      if (fieldValue.every((item) => isNumber(item) || isString(item)))
          return fieldValue.join(', ');
       else
          return fieldValue.map((item, index) => (
             <ul key={index}>{renderSingleField(item)}</ul>
          ));
-   else if (fieldValue && typeof fieldValue === 'object')
-      return <ul>{renderFields(fieldValue)}</ul>;
+   else if (fieldValue && isObject(fieldValue))
+      return <ul>{Fields(fieldValue as FieldArray | FieldObject)}</ul>;
    else
       return (
          <>
@@ -69,9 +76,10 @@ const renderFieldValue = (fieldValue: FieldValue): ReactNode => {
  * @returns ReactNode
  */
 const renderSingleField = (field: FieldValue): ReactNode => {
-   if (Array.isArray(field) && field.every((item) => typeof item === 'number'))
+   if (Array.isArray(field) && field.every((item) => isNumber(item)))
       return field.join(', ');
-   else if (field && typeof field === 'object') return renderFields(field);
+   else if (field && isObject(field))
+      return Fields(field as FieldArray | FieldObject);
    else return <>{field === null || field === undefined ? 'null' : field}</>;
 };
 
@@ -144,9 +152,7 @@ const App: FC = () => {
          <main>
             {jsonData.length == 0
                ? 'Visualize here'
-               : jsonData.map((item, key) => (
-                    <ul key={key}>{renderFields(item)}</ul>
-                 ))}
+               : jsonData.map((item, key) => <ul key={key}>{Fields(item)}</ul>)}
          </main>
       </div>
    );

@@ -98,25 +98,41 @@ body {
          .value {
             display: inline;
             font-size: 18px;
+
+            summary {
+               font-size: 14px;
+               padding: 1px 0 1px 8px;
+               background-color: rgb(129, 129, 129);
+               border-radius: 2px;
+               cursor: pointer;
+            }
          }
 
-         li:before,
-         li:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 15px;
-            height: 2.5px;
-            background-color: var(--field-wrap);
+         li {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 5px;
+
+				&:before,
+				&:after {
+					content: '';
+					position: absolute;
+					left: 0;
+					width: 15px;
+					height: 2.5px;
+					background-color: var(--field-wrap);
+				}
+	
+				&:after {
+					top: 0;
+				}
+	
+				&:before {
+					bottom: 0;
+				}
          }
 
-         li:after {
-            top: 0;
-         }
-
-         li:before {
-            bottom: 0;
-         }
       }
    }
 }
