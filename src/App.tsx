@@ -1,5 +1,5 @@
 //Libraries
-import { FC, ChangeEvent, useState, useRef } from 'react';
+import { FC, ChangeEvent, KeyboardEvent, useState, useRef } from 'react';
 
 // Components
 import Fields from './components/Fields';
@@ -47,6 +47,12 @@ const App: FC = () => {
       }
    };
 
+   // Handler for visualize JSOPN when key Command / Control + Enter are pressed
+   const onAccessibilityPress = (e: KeyboardEvent): void | null =>
+      (e.metaKey || e.ctrlKey) && e.key === 'Enter'
+         ? visualizeTextareaValue()
+         : null;
+
    return (
       <div className="container">
          <h1>Insert a JSON file in the input box, or write your own JSON</h1>
@@ -58,7 +64,7 @@ const App: FC = () => {
                accept=".json"
                onChange={onInputFileUpload}
             />
-            <span>or</span>
+            <span className='or'>or</span>
 
             <div>
                <div className="textarea-container">
@@ -66,13 +72,15 @@ const App: FC = () => {
                      placeholder="Write in JSON"
                      value={textareaValue}
                      onChange={onTextareaValueChange}
+                     onKeyDown={onAccessibilityPress}
                   ></textarea>
                   <button onClick={visualizeTextareaValue}>Visualize</button>
                </div>
                <div className="tips">
                   - Remember to use <u>double quotes</u> and{' '}
                   <u>remove commas</u> from last properties in JSON.
-               </div>
+					</div>
+					<span>- Press Command / Control + Enter to visualize</span>
             </div>
          </div>
 
