@@ -1,13 +1,9 @@
-//Libraries
 import { FC, ChangeEvent, KeyboardEvent, useState, useRef } from 'react';
 
-// Components
 import Fields from './components/Fields';
 
-// Types
 import { FieldObject } from './types';
 
-// SCSS
 import './assets/scss/index.scss';
 
 const App: FC = () => {
@@ -25,16 +21,6 @@ const App: FC = () => {
       reader.readAsText(file);
    };
 
-   // Handler for textarea insertion
-   const onTextareaValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void =>
-      setTextareaValue(e.target.value);
-
-   // Visualize JSON on button click
-   const visualizeTextareaValue = (): void => {
-      setJsonDataHandler(textareaValue);
-      if (inputRef.current) inputRef.current.value = '';
-   };
-
    // Parse json received and set json state
    const setJsonDataHandler = (value: string | ArrayBuffer | null): void => {
       try {
@@ -45,6 +31,16 @@ const App: FC = () => {
       } catch (error) {
          alert('Errore nella lettura del file JSON. Usa il formato corretto.');
       }
+   };
+
+   // Handler for textarea insertion
+   const onTextareaValueChange = (e: ChangeEvent<HTMLTextAreaElement>): void =>
+      setTextareaValue(e.target.value);
+
+   // Visualize JSON on button click
+   const visualizeTextareaValue = (): void => {
+      setJsonDataHandler(textareaValue);
+      if (inputRef.current) inputRef.current.value = '';
    };
 
    // Handler for visualize JSOPN when key Command / Control + Enter are pressed
@@ -64,7 +60,7 @@ const App: FC = () => {
                accept=".json"
                onChange={onInputFileUpload}
             />
-            <span className='or'>or</span>
+            <span className="or">or</span>
 
             <div>
                <div className="textarea-container">
@@ -79,8 +75,8 @@ const App: FC = () => {
                <div className="tips">
                   - Remember to use <u>double quotes</u> and{' '}
                   <u>remove commas</u> from last properties in JSON.
-					</div>
-					<span>- Press Command / Control + Enter to visualize</span>
+               </div>
+               <span>- Press Command / Control + Enter to visualize</span>
             </div>
          </div>
 

@@ -1,13 +1,9 @@
-//Libraries
 import { ReactNode } from 'react';
 
-// Components
 import FieldValue from './FieldValue';
 
-// Utils
 import { isObject } from '../utils/isType';
 
-// Types
 import { FieldArray, FieldObject } from '../types';
 
 // Render all json entries

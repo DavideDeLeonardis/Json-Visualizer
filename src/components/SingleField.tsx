@@ -1,13 +1,9 @@
-//Libraries
 import { ReactNode } from 'react';
 
-// Components
 import Fields from '../components/Fields';
 
-// Utils
 import { isNumber, isObject } from '../utils/isType';
 
-// Types
 import { FieldValue, FieldArray, FieldObject } from '../types';
 
 // Render json single fields and nullish values

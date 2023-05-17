@@ -1,15 +1,10 @@
-//Libraries
 import { ReactNode } from 'react';
 
-// Components
 import Fields from '../components/Fields';
 import SingleField from '../components/SingleField';
 
-// Utils
 import { isString, isNumber, isObject } from '../utils/isType';
-import shortenString from '../utils/shortenString';
 
-// Types
 import { FieldValue, FieldArray, FieldObject } from '../types';
 
 // Render json properties VALUES
@@ -18,6 +13,12 @@ import { FieldValue, FieldArray, FieldObject } from '../types';
  * @returns ReactNode
  */
 const renderFieldValue = (fieldValue: FieldValue): ReactNode => {
+   const shortenString = (string: string, maxLength = 200): string => {
+      if (string.length > maxLength)
+         string = string.substring(0, maxLength) + '...';
+      return string;
+   };
+
    if (Array.isArray(fieldValue))
       if (fieldValue.every((item) => isNumber(item) || isString(item)))
          return (
