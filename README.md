@@ -2,11 +2,7 @@
 
 ## Json file visualizer for better understanding and readability.
 
-### Insert a file or write your own Json
-
-<br>
-
-### - Created without using external libraries
+### Insert a file or write your own JSON code.
 
 <br>
 
